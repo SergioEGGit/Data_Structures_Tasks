@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2020/04/26 17:29:43.000.510,=C:\Users\Sergio EG\Documents\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>2020/04/26 17:29:47.000.387,=C:\Users\Sergio EG\Documents\Embarcadero\Studio\Projects\File1.cpp</Transaction>
+    <Transaction>2020/04/26 18:52:11.000.551,C:\Users\Sergio EG\Documents\Embarcadero\Studio\Projects\File1.cpp=C:\Usac\Estructuras De Datos\Clase\EDD20S1-201801628\Tareas\T5\ArbolB.cpp</Transaction>
+    <Transaction>2020/04/26 18:52:15.000.361,C:\Users\Sergio EG\Documents\Embarcadero\Studio\Projects\Project1PCH1.h=C:\Usac\Estructuras De Datos\Clase\EDD20S1-201801628\Tareas\T5\Project1PCH1.h</Transaction>
+    <Transaction>2020/04/26 18:52:18.000.397,C:\Users\Sergio EG\Documents\Embarcadero\Studio\Projects\Project1.cbproj=C:\Usac\Estructuras De Datos\Clase\EDD20S1-201801628\Tareas\T5\Project1.cbproj</Transaction>
+  </Transactions>
+</BorlandProject>

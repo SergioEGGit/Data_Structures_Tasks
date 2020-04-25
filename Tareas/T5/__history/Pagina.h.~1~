@@ -1,0 +1,482 @@
+//---------------------------------------------------------------------------
+
+#ifndef PaginaH
+#define PaginaH
+
+
+clase  pagina ;
+
+// representa la casilla que va en cada una de las listas de cada página
+struct  Casilla {
+	int valor; // el numero que se guarda en cada casilla
+	Pagina * hizq, * hder; // sus hijos los cuales son paginas
+	Pagina * actual; // es la pagina en la que se encuentra
+	Casilla * siguiente, * anterior; // el siguiente y el anterior de la casilla en
+	// la lista de la pagina
+	Casilla2 * direccionLista; // es la dirección a la lista, la cual esta
+	// ordenada en el arbol b
+};
+
+clase  Pagina {
+
+	int n; // maximo de casillas que caben en una pagina
+	// punteros a la casilla importantes de cada lista
+	Casilla * principio, * final, * anterior, * mitad, * lugarEncontrado;
+ 	Pagina * padre; // padre de la casilla, apunta a la pagina padre
+ 	Casilla * padreCasilla; // padre casilla de la pagina
+	int cuantos; // el numero de casillas en la pagina
+	Donde donde; // la localización de la casilla a la que se busca
+	EsMenor esMenor; // se usa para saber si el valor agregado es menor o mayor
+	// que la mitad
+	int menores, mayoresOiguales; // 'menores' son la cantidad de casillas antes
+	// de la mitad y 'mayoresOiguales' son la cantidad de casilla que son mayores
+	// que la mitad y la mitad misma
+
+público:
+
+	Pagina ( int orden); // constructor de la pagina
+	~ Pagina (); // destructor de la pagina
+	vacío  terminar (); // copia del destructor
+	bool  buscar ( int a); // se usa para buscar en la lista
+	Pagina * buscar2 ( int a); // se usa para buscar en el arbol
+	bool  agregar ( int a); // se usa para agregar un numero a la lista
+	nulo  agregar (Casilla * p); // se usa para agregar una casilla a la lista
+	anular  pintar (); // pinta la lista
+	vacío  acomodarHijos (); // acomoda los hijos de cada casilla de la pagina
+	nulo  desligar (Casilla * casilla); // desliga una casilla de la pagina
+	int  obtenerCuantos (); // regresa el numero de casillas de la lista
+	Casilla * obtenerLugarEncontrado (); // regresa el lugar encontrado
+	Casilla * obtenerMitad (); // regresa la mitad
+	Pagina * obtenerPadre (); // regresa la pagina padre
+	vacío  poner Padre (Pagina * padre); // asigna el padre a la pagina
+	Casilla * obtenerPrincipio (); // regresa el principio
+	Casilla * obtenerFinal (); // regresa el final
+	Casilla * obtenerPadreCasilla (); // regresa la casilla padre de una pagina
+	vacío  ponerPadreCasilla (Casilla * p); // pone la casilla padre de la pagina
+};
+
+/ * constructor de la pagina, tiene como parametro el 'orden' la pagina,
+   el cual es el valor maximo de casillas que puede tener una pagina * /
+Pagina :: Pagina ( int orden) {
+	esto -> n = orden;
+	cuantos = 0 ;
+	principio = NULL ;
+	final = NULL ;
+	anterior = NULL ;
+	lugarEncontrado = NULL ;
+	mitad = NULL ;
+	donde = VACIO;
+	padre = NULL ;
+	esMenor = NO;
+	menores = 0 ;
+	mayoresOiguales = 0 ;
+	padreCasilla = NULL ;
+}
+
+/ * destructor de la pagina * /
+Pagina :: ~ Pagina () {
+
+	Casilla * p;
+	while (principio) {
+		p = principio;
+		principio = p -> siguiente;
+		eliminar p;
+	}
+	anterior = NULL ;
+	mitad = NULL ;
+	final = NULL ;
+	lugarEncontrado = NULL ;
+	donde = VACIO;
+	cuantos = 0 ;
+	n = 0 ;
+	padre = NULL ;
+	esMenor = NO;
+	menores = 0 ;
+	mayoresOiguales = 0 ;
+	padreCasilla = NULL ;
+}
+/ * funcion copia del destructor * /
+ Pagina vacía :: terminar () {
+
+	Casilla * p;
+	while (principio) {
+		p = principio;
+		principio = p -> siguiente;
+		eliminar p;
+	}
+	anterior = NULL ;
+	mitad = NULL ;
+	final = NULL ;
+	lugarEncontrado = NULL ;
+	donde = VACIO;
+	cuantos = 0 ;
+	n = 0 ;
+	padre = NULL ;
+	esMenor = NO;
+	menores = 0 ;
+	mayoresOiguales = 0 ;
+	padreCasilla = NULL ;
+}
+
+/ *   funcion que regresa la mitad de la lista de la pagina   * /
+Casilla * Pagina :: obtenerMitad () {
+	devuelve  esto -> mitad ;
+}
+
+/ *   funcion que regresa la pagina padre de la pagina * /
+Pagina * Pagina :: obtenerPadre () {
+	devuelve  esto -> padre ;
+}
+/ *   funcion que pone un padre a la pagina * /
+ Pagina vacía :: ponerPadre (Pagina * padre) {
+	esto -> padre = padre;
+}
+/ *   funcion que regresa el principio de la pagina * /
+Casilla * Pagina :: obtenerPrincipio () {
+	devuelve  esto -> principio ;
+}
+/ * funcion que regresa el final de la pagina * /
+Casilla * Pagina :: obtenerFinal () {
+	devuelve  esto -> final ;
+}
+
+/ * funcion que busca un numero en la lista de la pagina, tiene como parametro el numero 'a'
+   a buscar, regresa un booleano buscar si lo encontro o no lo encontro (verdadero o falso) * /
+bool  Pagina :: buscar ( int a) {
+
+	Casilla * p;
+
+	if (principio) {
+
+		if (a> = mitad-> valor ) {
+			p = mitad;
+			anterior = p-> anterior ;
+			esMenor = NO;
+		} más {
+			p = principio;
+			anterior = NULL ;
+			esMenor = SI;
+		}
+
+		mientras que (p) {
+
+			if ((p-> valor ) == a) {
+
+				if (principio == p) {
+					donde = PRINCIPIO;
+				} else  if (p-> siguiente == NULL ) {
+					donde = FINAL;
+				} más {
+					donde = ENMEDIO;
+				}
+
+				volver  verdadero ;
+
+			} else  if ((p-> valor ) <a) {
+				anterior = p;
+				p = p -> siguiente;
+
+			} más {
+
+				if (principio == p) {
+					donde = PRINCIPIO;
+				} más {
+					donde = ENMEDIO;
+				}
+				devuelve  falso ;
+			}
+
+		}
+
+	} más {
+
+		donde = VACIO;
+		anterior = NULL ;
+		esMenor = NO;
+		devuelve  falso ;
+
+	}
+	donde = FINAL;
+	devuelve  falso ;
+
+}
+
+/ * funcion que buscar un numero en la lista de la pagina, tiene como argumento
+	el numero 'a'a buscar, regresa la pagina donde seguira buscando hizq o hder,
+	o actual si es que ya encontro el numero * /
+Pagina * Pagina :: buscar2 ( int a) {
+
+	Casilla * p;
+
+	if (principio) {
+		if (a> = mitad -> valor) {
+			p = mitad;
+			// anterior = p -> anterior;
+		} más {
+			p = principio;
+			// anterior = NULL;
+		}
+		mientras que (p) {
+			if ((p -> valor) == a) {
+				// si encontro el numero regresa la casilla y la pagina
+				lugarEncontrado = p; // la casilla
+				volver p-> actual ; // la pagina
+
+			} else  if ((p -> valor) <a) {
+				// anterior = p;
+				p = p -> siguiente;
+
+			} más {
+
+				// si no entrontro el numero, regresa la casilla padre y la
+				// pagina donde seguira buscando
+				lugarEncontrado = p; // la casilla "padre"
+				volver p-> hizq ; // la pagina hijo
+			}
+		}
+
+	} más {
+		lugarEncontrado = NULL ;
+		devuelve  NULL ;
+	}
+	// si no entrontro el numero, regresa la casilla padre y la pagina donde
+	// seguira buscando
+	lugarEncontrado = final; // la casilla "padre"
+	volver final-> hder ; // la pagina hijo
+}
+
+/ * funcion que agrega un numero a la lista de la pagina, tiene como parametro
+	el numero 'a' a agregar regresa un booleano especificó si se pudo agregar
+	o no * /
+bool  Pagina :: agregar ( int a) {
+
+	Casilla * p;
+
+	if ( buscar (a)) devuelve  falso ;
+
+	p = nueva Casilla;
+	p-> valor = a;
+	p-> actual = esto ;
+	p-> hder = NULL ;
+	p-> hizq = NULL ;
+
+	if (donde == VACIO) {
+		p -> siguiente = NULL ;
+		p -> anterior = NULL ;
+		principio = p;
+		final = p;
+	} else  if (donde == PRINCIPIO) {
+		p -> siguiente = principio;
+		p -> anterior = NULL ;
+		principio -> anterior = p;
+		principio = p;
+	} else  if (donde == FINAL) {
+		p -> siguiente = NULL ;
+		p -> anterior = final;
+		final -> siguiente = p;
+		final = p;
+	} más {
+		p -> siguiente = anterior -> siguiente;
+		p -> anterior = anterior;
+		(anterior -> siguiente) -> anterior = p;
+		anterior -> siguiente = p;
+	}
+
+
+	if (! (principio-> siguiente )) {
+		mitad = p;
+		esMenor = SI;
+		mayoresOiguales ++;
+	} más {
+
+		if (esMenor == SI) {
+			menores ++;
+		} más {
+			mayoresOiguales ++;
+		}
+
+		if ((menores + 2 ) == mayoresOiguales) {
+			mitad = mitad -> siguiente;
+			menores ++;
+			mayoresOiguales--;
+		} else  if (menores> mayoresOiguales) {
+			mitad = mitad -> anterior;
+			menores--;
+			mayoresOiguales ++;
+		}
+	}
+	cuantos ++;
+	lugarEncontrado = p;
+	volver  verdadero ;
+
+}
+
+/ * funcion que agrega una casilla a la lista de la pagina, tiene como parametro la casilla 'p' a agregar * /
+ Pagina vacía :: agregar (Casilla * p) {
+
+	buscar (p-> valor );
+
+	p-> actual = esto ;
+
+	if (donde == VACIO) {
+		p -> siguiente = NULL ;
+		p -> anterior = NULL ;
+		principio = p;
+		final = p;
+
+	} else  if (donde == PRINCIPIO) {
+
+		p -> siguiente = principio;
+		p -> anterior = NULL ;
+		principio -> anterior = p;
+		principio = p;
+
+	} else  if (donde == FINAL) {
+		p -> siguiente = NULL ;
+		p -> anterior = final;
+		anterior -> siguiente = p;
+		final = p;
+
+	} más {
+
+		p -> siguiente = anterior -> siguiente;
+		p -> anterior = anterior;
+		(anterior -> siguiente) -> anterior = p;
+		anterior -> siguiente = p;
+	}
+
+
+	if (! (principio-> siguiente )) {
+		mitad = p;
+		esMenor = SI;
+		mayoresOiguales ++;
+	} más {
+
+		if (esMenor == SI) {
+			menores ++;
+		} más {
+			mayoresOiguales ++;
+		}
+
+		if ((menores + 2 ) == mayoresOiguales) {
+			mitad = mitad -> siguiente;
+			menores ++;
+			mayoresOiguales--;
+		} else  if (menores> mayoresOiguales) {
+			mitad = mitad -> anterior;
+			menores--;
+			mayoresOiguales ++;
+		}
+	}
+	cuantos ++;
+	lugarEncontrado = p;
+}
+
+/ * funcion que pinta el numero de la lista de la pagina * /
+ Pagina vacía :: pintar () {
+
+	Casilla * p;
+	p = principio;
+	if (principio) {
+
+		mientras que (p) {
+			cout << p -> valor << "  " ;
+			p = p -> siguiente;
+		}
+	} más {
+		cout << " Pagina Vacia! " ;
+	}
+}
+
+/ * funcino que regresa la cantidad de casillas de la pagina * /
+int  Pagina :: obtenerCuantos () {
+	devuelve  esto -> cuantos ;
+}
+/ * funcion que regresa el lugar encontrado de la pagina * /
+Casilla * Pagina :: obtenerLugarEncontrado () {
+	volver lugarEncontrado;
+}
+
+/ * funcion que acomoda los hijos de las casillas de cada pagina, esta se usa cuando se divide
+   una pagina y tengas que acomodar a los hijos de nuevo * /
+ Pagina vacía :: acomodarHijos () {
+
+	if (principio) {
+		Casilla * p;
+		p = principio;
+		if (p-> hizq ) {
+			p-> hizq -> ponerPadre ( esto );
+			p-> hizq -> ponerPadreCasilla (p);
+		}
+
+		mientras que (p) {
+
+			si (p-> hder ) {
+				p-> hder -> ponerPadre ( este );
+				p-> hder -> ponerPadreCasilla (p);
+			}
+
+			p = p-> siguiente ;
+
+		}
+
+	}
+
+}
+
+/ * funcion que desliga una casilla de la lista de la pagina, tiene como parametro
+   la casilla 'casilla' a desligar * /
+ Pagina vacía :: desligar (Casilla * casilla) {
+
+	Casilla * p = casilla;
+
+	if (p-> siguiente && p-> anterior ) {
+		p-> anterior -> siguiente = p-> siguiente ;
+		p-> siguiente -> anterior = p-> anterior ;
+	} else  if (p-> anterior &&! p-> siguiente ) {
+		p-> anterior -> siguiente = NULL ;
+		final = p-> anterior ;
+	} else  if (! p-> anterior && p-> siguiente ) {
+		p-> siguiente -> anterior = NULL ;
+		principio = p-> siguiente ;
+	} más {
+		principio = NULL ;
+		final = NULL ;
+	}
+
+	if (p-> valor > = mitad-> valor ) esMenor = NO;
+	de lo contrario esMenor = SI;
+
+	if (esMenor == SI) {
+		menores--;
+	} más {
+		mayoresOiguales--;
+	}
+
+	if ((menores + 2 ) == mayoresOiguales) {
+		mitad = mitad-> siguiente ;
+		menores ++;
+		mayoresOiguales--;
+	} else  if (menores> mayoresOiguales) {
+		mitad = mitad-> anterior ;
+		menores--;
+		mayoresOiguales ++;
+	} else  if (menores == mayoresOiguales && p == mitad) {
+		mitad = mitad-> siguiente ;
+	}
+	cuantos--;
+
+}
+/ * funcion que regresa la casilla padre una una pagina 'hijo' * /
+Casilla * Pagina :: obtenerPadreCasilla () {
+	devuelve  esto -> padreCasilla ;
+}
+/ * funcion que pone el padreCasilla de una pagina * /
+ Pagina vacía :: ponerPadreCasilla (Casilla * p) {
+	esto -> padreCasilla = p;
+}
+
+
+
+//---------------------------------------------------------------------------
+#endif

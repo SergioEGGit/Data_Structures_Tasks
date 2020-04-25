@@ -1,0 +1,71 @@
+
+   #pragma hdrstop
+   #pragma argsused
+
+   #ifdef _WIN32
+   #include <tchar.h>
+   #else
+   typedef char _TCHAR;
+   #define _tmain main
+   #endif
+
+   #include <stdio.h>
+
+
+   #define TAMANO 1000
+
+
+   //-------------------------------Clase Nodo----------------------------------
+
+   class nodo
+   {
+
+	   struct stclave
+	   {
+		   int valor;
+		   long registro;
+	   };
+
+	   class bnodo
+	   {
+		   public:
+			  bnodo(int nClaves);
+				~bnodo ();
+
+		   private:
+			  int clavesUsadas;
+			  stclave *clave;
+			  bnodo *puntero;
+			  bnodo *padre;
+
+
+		   friend class btree;
+	   };
+   };
+
+
+   //---------------------------------Métodos-----------------------------------
+
+	   void Buscar_Nodo(int clave)
+	   {
+		   int Pos;
+		   int I;
+		   int N;
+
+		   struct nodo *ptr = root;
+
+
+       }
+
+
+
+
+  int _tmain(int argc, _TCHAR* argv[])
+  {
+
+
+
+
+
+	  return 0;
+  }
